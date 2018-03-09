@@ -11,5 +11,5 @@ def bubble_sort(arr)
   end
   arr
 end
-arr = [14, 33, 27, 35, 10]
+arr = [14, 33, 27, 35, 10,2]
 puts "Bubble Sorted Array #{bubble_sort(arr)}"
