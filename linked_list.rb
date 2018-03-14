@@ -1,8 +1,13 @@
 class Node
   attr_accessor :value, :node_next
+  @@list_length = 0
   def initialize(value, node_next)
     @value = value
     @node_next = node_next
+    @@list_length += 1
+  end
+  def self.list_length
+    @@list_length
   end
 end
 
@@ -36,15 +41,42 @@ class LinkedList
 
   def reverse
     current_node = @head
-    @prev_node, @next_node = nil, nil
+    prev_node, next_node = nil, nil
     while current_node
-      @next_node = current_node.node_next
-      current_node.node_next = @prev_node
-      @prev_node = current_node
-      current_node = @next_node
+      next_node = current_node.node_next
+      current_node.node_next = prev_node
+      prev_node = current_node
+      current_node = next_node
     end
-    @head = @prev_node
-  end 
+    @head = prev_node
+  end
+
+  def sort
+    length = Node.list_length
+    (0...length).each do |i|
+      current_node = @head
+      while current_node
+        next_node = current_node.node_next
+        break if next_node.nil?
+        if current_node.value > next_node.value
+          current_node.value , next_node.value = next_node.value, current_node.value 
+        end
+        current_node = current_node.node_next
+      end
+    end
+  end
+  def remove_duplicate
+    sort
+    current_node = @head
+    while current_node != nil
+      next_node = current_node.node_next
+      break if next_node.nil?
+      if current_node.value == next_node.value
+        current_node.node_next = next_node.node_next
+      end
+      current_node = next_node
+    end
+  end
 
   def print_linked_list
     current_node = @head
@@ -67,4 +99,12 @@ linked_list.delete(30)
 linked_list.print_linked_list
 linked_list.reverse
 puts "After reverse Operation"
+linked_list.print_linked_list
+linked_list.add(40)
+puts "After Sort Operation"
+linked_list.sort
+linked_list.print_linked_list
+
+puts "After Duplicate Remove"
+linked_list.remove_duplicate
 linked_list.print_linked_list
